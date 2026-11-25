@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "radar-odom"
+version = "0.2.0"
+description = "Learned alignment of dense 3D radar images (radar odometry) on ColoRadar"
+requires-python = ">=3.9"
+dependencies = ["numpy", "scipy", "torch", "pyyaml", "matplotlib", "tqdm"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["radar_odom*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

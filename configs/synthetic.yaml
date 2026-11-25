@@ -1,0 +1,33 @@
+# Synthetic pipeline check (scripts/make_synthetic.py). Smaller grids than ColoRadar so it
+# trains in minutes on an 8 GB laptop GPU.
+polar:
+  num_range_bins: 64
+  range_bin_width: 0.2
+  range_offset: 0.1
+  num_azimuth_bins: 64
+  num_elevation_bins: 16
+  azimuth_fov_deg: 140
+  elevation_fov_deg: 40
+cartesian:
+  nx: 48
+  ny: 64
+  nz: 16
+  voxel: 0.25
+data:
+  root: data/synthetic
+  train: [seq_00, seq_01, seq_02, seq_03, seq_04, seq_05, seq_06, seq_07, seq_08, seq_09]
+  val: [seq_10, seq_11]
+  test: [seq_12, seq_13]
+  strides: [1, 2, 3]
+  eval_stride: 1
+  use_doppler: true
+  doppler_scale: 2.0
+  reverse_aug: true
+train:
+  out_dir: runs/synthetic
+  epochs: 40
+  batch_size: 16
+  lr: 3.0e-4
+  patience: 8
+  num_workers: 6
+  base_channels: 16

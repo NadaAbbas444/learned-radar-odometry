@@ -1,0 +1,45 @@
+# ColoRadar cascade radar. The polar grid is overwritten per sequence by
+# scripts/prepare_coloradar.py from calib/cascade/heatmap_cfg.txt; copy the printed values
+# here. Cartesian grid as in the report: d=64, w=128, h=64, 0.12 m voxels.
+# Split by SEQUENCE. Names are the ColoRadar sequence folders (longboard runs excluded,
+# as in the report). Remove any you have not downloaded.
+polar:
+  num_range_bins: 128
+  range_bin_width: 0.125
+  num_azimuth_bins: 128
+  num_elevation_bins: 32
+cartesian:
+  nx: 64
+  ny: 128
+  nz: 64
+  voxel: 0.12
+data:
+  root: data/coloradar
+  train: [12_21_2020_ec_hallways_run0, 12_21_2020_ec_hallways_run1, 12_21_2020_ec_hallways_run2,
+          12_21_2020_arpg_lab_run0, 12_21_2020_arpg_lab_run1, 12_21_2020_arpg_lab_run2,
+          2_28_2021_outdoors_run0, 2_28_2021_outdoors_run1, 2_28_2021_outdoors_run2,
+          2_28_2021_outdoors_run3, 2_28_2021_outdoors_run4, 2_28_2021_outdoors_run5,
+          2_24_2021_aspen_run0, 2_24_2021_aspen_run1, 2_24_2021_aspen_run2, 2_24_2021_aspen_run3,
+          2_24_2021_aspen_run4, 2_24_2021_aspen_run5, 2_24_2021_aspen_run6, 2_24_2021_aspen_run7,
+          2_23_2021_edgar_classroom_run0, 2_23_2021_edgar_classroom_run1, 2_23_2021_edgar_classroom_run2,
+          2_23_2021_edgar_classroom_run3, 2_23_2021_edgar_army_run0, 2_23_2021_edgar_army_run1,
+          2_23_2021_edgar_army_run2, 2_23_2021_edgar_army_run3]
+  val: [12_21_2020_ec_hallways_run3, 12_21_2020_arpg_lab_run3, 2_28_2021_outdoors_run6,
+        2_28_2021_outdoors_run7, 2_24_2021_aspen_run8, 2_24_2021_aspen_run9,
+        2_23_2021_edgar_classroom_run4, 2_23_2021_edgar_army_run4]
+  test: [12_21_2020_ec_hallways_run4, 12_21_2020_arpg_lab_run4, 2_28_2021_outdoors_run8,
+         2_28_2021_outdoors_run9, 2_24_2021_aspen_run10, 2_24_2021_aspen_run11,
+         2_23_2021_edgar_classroom_run5, 2_23_2021_edgar_army_run5]
+  strides: [1, 2]
+  eval_stride: 1
+  use_doppler: true
+  doppler_scale: 2.0
+  reverse_aug: true
+train:
+  out_dir: runs/coloradar
+  epochs: 60
+  batch_size: 4
+  lr: 1.0e-4
+  patience: 10
+  num_workers: 6
+  base_channels: 16
