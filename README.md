@@ -69,6 +69,22 @@ nothing about accuracy on real radar.
 4. Put the sequence names in `configs/coloradar.yaml` (split by sequence, ideally hold out
    whole runs of each environment for test), then train and evaluate as above.
 
+### Synthetic run (pipeline check, not a radar result)
+
+10 training / 2 validation / 2 test sequences of 300 frames, stride-1 evaluation
+(`runs/synthetic/`). Best validation loss 0.18 against 0.99 for the constant predictor.
+
+| test seq | method | RPE trans [m] | RPE rot [deg] | ATE RMSE [m] |
+|---|---|---|---|---|
+| seq_12 | model | 0.031 | 0.46 | 1.28 |
+| seq_12 | constant | 0.054 | 1.75 | 2.98 |
+| seq_13 | model | 0.060 | 0.79 | 4.19 |
+| seq_13 | constant | 0.094 | 1.78 | 5.98 |
+
+Per-step errors are well below the baselines, so the labels, pairing and encoding are
+consistent. Chained trajectories still drift (37–58 % end-point drift), and the gap
+between training (0.06) and validation loss shows overfitting with only 10 sequences.
+
 ## Reading results
 
 `evaluate` writes `results_test.md`, `metrics_test.json`, `trajectories_test.png` and
