@@ -26,8 +26,14 @@ alt="Radar returns from above, coloured by learned trust weight, with true and e
 
 Figures: `python scripts/make_figures.py --config configs/coloradar_4runs.yaml`.
 
-This repository rewrites `asldoc-2022-RobotX-Nada-Learning-Radar-Odometry`, whose reported
-accuracy came from a model no better than a constant guess. See
+## Background
+
+This project began as my 2022 fellowship work at the
+[Autonomous Systems Lab (ASL), ETH Zürich](https://asl.ethz.ch/), in the original repository
+[ethz-asl/asldoc-2022-RobotX-Nada-Learning-Radar-Odometry](https://github.com/ethz-asl/asldoc-2022-RobotX-Nada-Learning-Radar-Odometry).
+This repository is a ground-up rewrite of that work: the original pipeline's reported
+accuracy came from a model no better than a constant guess, and here the learning problem,
+data handling and evaluation are rebuilt, verified, and compared against a new method. See
 [What changed and why](#what-changed-and-why).
 
 ## Install

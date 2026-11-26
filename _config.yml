@@ -1,0 +1,4 @@
+title: Learned Radar Odometry
+description: Stacked-pair 3D CNN vs learned Doppler velocity on ColoRadar. Started at the Autonomous Systems Lab, ETH Zürich (2022).
+theme: jekyll-theme-cayman
+exclude: [runs, configs, tests, radar_odom, scripts, pyproject.toml]
