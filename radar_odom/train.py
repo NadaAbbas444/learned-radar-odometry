@@ -52,7 +52,13 @@ def main(argv=None):
     overrides = {}
     for kv in args.set:
         k, v = kv.split("=", 1)
-        overrides[k] = yaml.safe_load(v)
+        val = yaml.safe_load(v)
+        if isinstance(val, str):  # YAML reads "3e-4" as a string
+            try:
+                val = float(val)
+            except ValueError:
+                pass
+        overrides[k] = val
     cfg = load_config(args.config, overrides)
     tc, dc = cfg.train, cfg.data
 

@@ -85,6 +85,23 @@ Per-step errors are well below the baselines, so the labels, pairing and encodin
 consistent. Chained trajectories still drift (37–58 % end-point drift), and the gap
 between training (0.06) and validation loss shows overfitting with only 10 sequences.
 
+### ColoRadar, first look (one run, not a result)
+
+Geometry verified on `12_21_2020_ec_hallways_run0`: lidar scans moved into the radar
+frame with the calib transforms line up best with the radar image at exactly 0° yaw
+(`scripts/check_lidar_overlay.py`; score 0.68 vs −0.35 at 90°).
+
+Training on time chunks of that single run (343 / 68 / 69 frames; `configs/coloradar_run0_chunks.yaml`):
+
+| run | train loss | best val loss | constant (val) | test RPE trans / rot | constant |
+|---|---|---|---|---|---|
+| per-frame max scaling | 1.00 | 1.39 | 1.39 | 0.212 m / 5.95° | 0.158 m / 5.58° |
+| noise floor removed (`runs/coloradar_run0_floor`) | 0.45 | 1.25 | 1.39 | 0.203 m / 5.86° | 0.158 m / 5.58° |
+
+Removing the noise floor lets the network fit the training pairs, but it overfits 683
+pairs and does not beat the constant predictor on the test chunk. Next: more runs,
+split by run.
+
 ## Reading results
 
 `evaluate` writes `results_test.md`, `metrics_test.json`, `trajectories_test.png` and
