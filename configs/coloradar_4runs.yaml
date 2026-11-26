@@ -1,0 +1,27 @@
+# Four indoor runs. Test = two whole runs never seen in training (one per environment).
+# Validation = last 15% (time) of each training run, used only for early stopping.
+polar:
+  heatmap_cfg: data/coloradar_raw/calib/cascade/heatmap_cfg.txt
+cartesian:
+  nx: 64
+  ny: 128
+  nz: 64
+  voxel: 0.12
+data:
+  root: data/coloradar
+  train: [12_21_2020_ec_hallways_run0_tr, 12_21_2020_arpg_lab_run0_tr]
+  val: [12_21_2020_ec_hallways_run0_va, 12_21_2020_arpg_lab_run0_va]
+  test: [12_21_2020_ec_hallways_run4, 12_21_2020_arpg_lab_run4]
+  strides: [1, 2]
+  eval_stride: 1
+  use_doppler: true
+  doppler_scale: 2.0
+  reverse_aug: true
+train:
+  out_dir: runs/coloradar_4runs
+  epochs: 50
+  batch_size: 4
+  lr: 3.0e-4
+  patience: 15
+  num_workers: 6
+  base_channels: 16

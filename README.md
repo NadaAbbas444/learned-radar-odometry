@@ -99,8 +99,33 @@ Training on time chunks of that single run (343 / 68 / 69 frames; `configs/color
 | noise floor removed (`runs/coloradar_run0_floor`) | 0.45 | 1.25 | 1.39 | 0.203 m / 5.86° | 0.158 m / 5.58° |
 
 Removing the noise floor lets the network fit the training pairs, but it overfits 683
-pairs and does not beat the constant predictor on the test chunk. Next: more runs,
-split by run.
+pairs and does not beat the constant predictor on the test chunk.
+
+### ColoRadar, split by run (`configs/coloradar_4runs.yaml`)
+
+Train: `ec_hallways_run0`, `arpg_lab_run0` (first 85 %; last 15 % = validation).
+Test: `ec_hallways_run4`, `arpg_lab_run4`, never seen in training.
+
+A least-squares fit of ego-velocity to the Doppler of the brightest 1 % of cells (no
+learning) correlates 0.86–0.97 with ground-truth vx/vy on the test runs, so the motion
+signal is in the data. The CNN only used it once Doppler was weighted by the
+floor-removed intensity (Doppler is random in noise cells).
+
+| test run | method | RPE trans [m] | RPE rot [deg] | ATE RMSE [m] |
+|---|---|---|---|---|
+| ec_hallways_run4 | model, raw Doppler | 0.233 | 3.65 | 11.1 |
+| ec_hallways_run4 | **model, intensity-weighted Doppler** | **0.111** | 3.69 | 14.4 |
+| ec_hallways_run4 | constant | 0.131 | 3.68 | 13.9 |
+| ec_hallways_run4 | zero | 0.239 | 3.67 | 11.5 |
+| arpg_lab_run4 | model, raw Doppler | 0.137 | 3.74 | 7.3 |
+| arpg_lab_run4 | **model, intensity-weighted Doppler** | **0.088** | 4.05 | 5.9 |
+| arpg_lab_run4 | constant | 0.167 | 3.74 | 16.9 |
+| arpg_lab_run4 | zero | 0.138 | 3.74 | 8.1 |
+
+Translation per step now beats both baselines on unseen runs (−15 % and −36 % vs
+the better baseline). Rotation is not learned (≈ baselines), so heading errors build up
+and chained trajectories drift (`runs/coloradar_4runs_dopmask/trajectories_test.png`).
+Note: the test runs are loops, so "end drift" favours the zero predictor; use RPE/ATE.
 
 ## Reading results
 
