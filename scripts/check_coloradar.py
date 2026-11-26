@@ -28,9 +28,9 @@ def main():
     cfg = load_config(a.config)
     s = load_sequence(Path(cfg.data.root) / a.seq)
     P = np.asarray(s.polar[a.frame], dtype=np.float32)
-    C = encode_numpy(np.log1p(np.maximum(P, 0)), cfg.polar, cfg.cartesian)
+    C = encode_numpy(np.maximum(P, 0), cfg.polar, cfg.cartesian)  # intensity stored as log1p
     fig, ax = plt.subplots(1, 3, figsize=(15, 4.5))
-    ax[0].imshow(np.log1p(np.maximum(P[0], 0)).max(0), aspect="auto", origin="lower")
+    ax[0].imshow(P[0].max(0), aspect="auto", origin="lower")
     ax[0].set_title("polar: max over elevation"); ax[0].set_xlabel("range bin"); ax[0].set_ylabel("azimuth bin")
     c = cfg.cartesian
     ext = [-c.ny / 2 * c.voxel, c.ny / 2 * c.voxel, c.x_min, c.x_min + c.nx * c.voxel]

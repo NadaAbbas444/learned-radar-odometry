@@ -1,13 +1,10 @@
-# ColoRadar cascade radar. The polar grid is overwritten per sequence by
-# scripts/prepare_coloradar.py from calib/cascade/heatmap_cfg.txt; copy the printed values
-# here. Cartesian grid as in the report: d=64, w=128, h=64, 0.12 m voxels.
+# ColoRadar cascade radar. The polar grid is read from the calib heatmap_cfg.txt below.
+# Cartesian grid as in the report: d=64, w=128, h=64, 0.12 m voxels.
 # Split by SEQUENCE. Names are the ColoRadar sequence folders (longboard runs excluded,
 # as in the report). Remove any you have not downloaded.
 polar:
-  num_range_bins: 128
-  range_bin_width: 0.125
-  num_azimuth_bins: 128
-  num_elevation_bins: 32
+  # real bin angles (non-uniform, az +-78 deg, el +-73 deg) and 5.93 cm range bins
+  heatmap_cfg: data/coloradar_raw/calib/cascade/heatmap_cfg.txt
 cartesian:
   nx: 64
   ny: 128

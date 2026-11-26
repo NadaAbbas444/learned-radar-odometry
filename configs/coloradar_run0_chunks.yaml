@@ -1,0 +1,28 @@
+# PRELIMINARY: one ColoRadar run (ec_hallways_run0) cut into time chunks
+# (scripts/split_sequence.py). Same building in all splits -> optimistic. Replace with
+# configs/coloradar.yaml (split by whole runs) once more runs are downloaded.
+polar:
+  heatmap_cfg: data/coloradar_raw/calib/cascade/heatmap_cfg.txt
+cartesian:
+  nx: 64
+  ny: 128
+  nz: 64
+  voxel: 0.12
+data:
+  root: data/coloradar
+  train: [12_21_2020_ec_hallways_run0_train]
+  val: [12_21_2020_ec_hallways_run0_val]
+  test: [12_21_2020_ec_hallways_run0_test]
+  strides: [1, 2]
+  eval_stride: 1
+  use_doppler: true
+  doppler_scale: 2.0
+  reverse_aug: true
+train:
+  out_dir: runs/coloradar_run0_chunks
+  epochs: 60
+  batch_size: 4
+  lr: 1.0e-4
+  patience: 10
+  num_workers: 6
+  base_channels: 16

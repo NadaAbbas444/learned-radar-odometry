@@ -11,7 +11,12 @@ import yaml
 
 @dataclass
 class PolarGridCfg:
-    """Polar heatmap geometry. Stored arrays are always (C, elevation, azimuth, range)."""
+    """Polar heatmap geometry. Stored arrays are always (C, elevation, azimuth, range).
+
+    If `heatmap_cfg` is set (path to ColoRadar calib/cascade/heatmap_cfg.txt), the bin
+    counts, range bin width and the real (non-uniform) bin angles are read from it.
+    """
+    heatmap_cfg: Optional[str] = None
     num_range_bins: int = 128
     range_bin_width: float = 0.125  # metres per range bin
     range_offset: float = 0.0  # range of bin 0 (metres)
@@ -113,7 +118,13 @@ def load_config(path: str | Path, overrides: dict | None = None) -> Config:
     for k, v in (overrides or {}).items():
         sec, key = k.split(".", 1)
         d.setdefault(sec, {})[key] = v
-    return _build(Config, d)
+    cfg = _build(Config, d)
+    if cfg.polar.heatmap_cfg:
+        from .data.coloradar import read_heatmap_cfg  # local import: avoid cycle
+        path = cfg.polar.heatmap_cfg
+        cfg.polar = read_heatmap_cfg(Path(path))
+        cfg.polar.heatmap_cfg = path
+    return cfg
 
 
 def to_dict(obj) -> Any:
