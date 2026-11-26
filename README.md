@@ -1,12 +1,34 @@
-# radar-odom: learned alignment of dense 3D radar images
+# Learned radar odometry: stacked-pair CNN vs learned Doppler
 
-Estimate the 6-DoF motion between two radar scans with a 3D CNN, on the
-[ColoRadar](https://arpg.colorado.edu/coloradar/) cascade-radar heatmaps. Two polar
-heatmaps are stacked, resampled to a Cartesian voxel grid on the GPU, and regressed to
-the relative pose `T_1_2` (frame 2 in frame 1), following Kramer's scan-alignment network.
+Radar odometry on the [ColoRadar](https://arpg.colorado.edu/coloradar/) cascade-radar
+heatmaps. Two approaches are compared on runs never seen in training:
 
-This is a rewrite of `asldoc-2022-RobotX-Nada-Learning-Radar-Odometry`. The idea is kept;
-the learning problem and the evaluation are rebuilt. See [What changed and why](#what-changed-and-why).
+* a **stacked-pair 3D CNN** (after Kramer's scan-alignment network, 9.4M parameters): two
+  polar heatmaps resampled to Cartesian voxels on the GPU, regressed to the 6-DoF pose change;
+* a **learned Doppler velocity model** (proposed, 26k parameters): a PointNet weights each
+  radar return, and velocity is the differentiable weighted least-squares solution of the
+  Doppler equation d = −u·v, from a single frame.
+
+**Result:** given the same (ground-truth) rotation, the learned Doppler model halves the
+CNN's trajectory error on the hallway test run (2.45 m vs 4.73 m over 102 m) and beats it
+in the lab (2.57 m vs 2.67 m). The CNN does not learn rotation at all, and cannot get it
+from Doppler: for a static reflector the rotational term u·(ω×p) is zero.
+
+<p align="center"><img src="docs/figures/learned_weights.gif" width="640"
+alt="Radar returns from above, coloured by learned trust weight, with true and estimated velocity"></p>
+
+| | |
+|---|---|
+| ![Trajectories](docs/figures/trajectories.png) | ![Velocity](docs/figures/velocity.png) |
+| Unseen runs: each method's translation chained with ground-truth rotation | Single-frame velocity vs ground truth on an unseen run |
+| ![Doppler physics](docs/figures/doppler_physics.png) | ![Lidar check](docs/figures/lidar_check.png) |
+| Measured vs physics-predicted Doppler: quantized in 0.165 m/s steps and cut off near −1.15 m/s, while the rig moves at ~1.25 m/s (a ceiling for any Doppler method) | Geometry check: lidar (red) moved into the radar frame lines up with radar returns; best match at exactly 0° yaw |
+
+Figures: `python scripts/make_figures.py --config configs/coloradar_4runs.yaml`.
+
+This repository rewrites `asldoc-2022-RobotX-Nada-Learning-Radar-Odometry`, whose reported
+accuracy came from a model no better than a constant guess. See
+[What changed and why](#what-changed-and-why).
 
 ## Install
 
