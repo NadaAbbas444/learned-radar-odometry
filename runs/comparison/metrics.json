@@ -1,0 +1,132 @@
+{
+  "12_21_2020_ec_hallways_run4": {
+    "zero": {
+      "trans_err_mean_m": 0.23923292536952342,
+      "trans_err_median_m": 0.24942121624918584,
+      "per_axis_mae_m": [
+        0.214,
+        0.0735,
+        0.043
+      ],
+      "ate_gt_rot_m": 11.505587215017407,
+      "ate_gt_rot_pct_of_path": 11.236836684447516
+    },
+    "constant": {
+      "trans_err_mean_m": 0.13058131475283233,
+      "trans_err_median_m": 0.12801181419012217,
+      "per_axis_mae_m": [
+        0.0794,
+        0.0725,
+        0.0431
+      ],
+      "ate_gt_rot_m": 4.522943555476405,
+      "ate_gt_rot_pct_of_path": 4.417295450989797
+    },
+    "CNN (stacked pair 3D CNN)": {
+      "trans_err_mean_m": 0.11087146304808335,
+      "trans_err_median_m": 0.1151788133144859,
+      "per_axis_mae_m": [
+        0.0774,
+        0.0441,
+        0.0435
+      ],
+      "ate_gt_rot_m": 4.733018752579315,
+      "ate_gt_rot_pct_of_path": 4.622463656417628
+    },
+    "Doppler least squares (no learning)": {
+      "trans_err_mean_m": 0.08842485377972491,
+      "trans_err_median_m": 0.08399209957595359,
+      "per_axis_mae_m": [
+        0.0553,
+        0.0352,
+        0.0434
+      ],
+      "ate_gt_rot_m": 2.74524834119696,
+      "ate_gt_rot_pct_of_path": 2.681124108817077
+    },
+    "learned Doppler (proposed)": {
+      "trans_err_mean_m": 0.08485230907985672,
+      "trans_err_median_m": 0.08162637211430926,
+      "per_axis_mae_m": [
+        0.0467,
+        0.0387,
+        0.0437
+      ],
+      "ate_gt_rot_m": 2.44517528302862,
+      "ate_gt_rot_pct_of_path": 2.3880602360197543
+    },
+    "rotation_err_deg": {
+      "CNN": 3.6898911802779684,
+      "zero": 3.6716155430615265,
+      "constant": 3.6825480120693976
+    },
+    "CNN own rotation": {
+      "ate_m": 14.420947105056705
+    }
+  },
+  "12_21_2020_arpg_lab_run4": {
+    "zero": {
+      "trans_err_mean_m": 0.13765719399564963,
+      "trans_err_median_m": 0.14251147918774615,
+      "per_axis_mae_m": [
+        0.0793,
+        0.0748,
+        0.0425
+      ],
+      "ate_gt_rot_m": 8.13112577651178,
+      "ate_gt_rot_pct_of_path": 8.535828326078136
+    },
+    "constant": {
+      "trans_err_mean_m": 0.16711183686646136,
+      "trans_err_median_m": 0.16402640917154024,
+      "per_axis_mae_m": [
+        0.1184,
+        0.0741,
+        0.0433
+      ],
+      "ate_gt_rot_m": 13.293097831465005,
+      "ate_gt_rot_pct_of_path": 13.95472215408577
+    },
+    "CNN (stacked pair 3D CNN)": {
+      "trans_err_mean_m": 0.08748762337176516,
+      "trans_err_median_m": 0.08406870144251433,
+      "per_axis_mae_m": [
+        0.0408,
+        0.0438,
+        0.0444
+      ],
+      "ate_gt_rot_m": 2.6666364258294672,
+      "ate_gt_rot_pct_of_path": 2.7993603056416756
+    },
+    "Doppler least squares (no learning)": {
+      "trans_err_mean_m": 0.0746193168919432,
+      "trans_err_median_m": 0.06894955764409225,
+      "per_axis_mae_m": [
+        0.0244,
+        0.0398,
+        0.0427
+      ],
+      "ate_gt_rot_m": 2.763762794058699,
+      "ate_gt_rot_pct_of_path": 2.90132084935077
+    },
+    "learned Doppler (proposed)": {
+      "trans_err_mean_m": 0.07188276925264274,
+      "trans_err_median_m": 0.06756115600815879,
+      "per_axis_mae_m": [
+        0.0221,
+        0.0379,
+        0.0428
+      ],
+      "ate_gt_rot_m": 2.570212223355008,
+      "ate_gt_rot_pct_of_path": 2.698136875894894
+    },
+    "rotation_err_deg": {
+      "CNN": 4.047012509105602,
+      "zero": 3.7407511100192186,
+      "constant": 3.7431226901735473
+    },
+    "CNN own rotation": {
+      "ate_m": 5.873558886115611
+    }
+  }
+}

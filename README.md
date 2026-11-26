@@ -127,6 +127,49 @@ the better baseline). Rotation is not learned (≈ baselines), so heading errors
 and chained trajectories drift (`runs/coloradar_4runs_dopmask/trajectories_test.png`).
 Note: the test runs are loops, so "end drift" favours the zero predictor; use RPE/ATE.
 
+## CNN vs learned Doppler (proposed)
+
+`python scripts/compare_methods.py --config configs/coloradar_4runs.yaml --cnn runs/coloradar_4runs_dopmask --doppler runs/doppler_net`
+
+**Why the stacked-pair CNN is the wrong tool here.** For a static reflector the radar
+measures d = −u·v; the rotational term u·(ω×p) vanishes because p ∥ u
+(`tests/test_doppler.py` checks this). The strongest motion cue in the data therefore
+carries no rotation at all, so rotation must come from matching two coarse radar
+volumes, which the CNN does not learn (rotation error = baselines). For translation, the
+CNN must rediscover a linear physical law from 1.8k pairs with 9.4M parameters.
+
+**Proposed: learned robust Doppler velocity** (`radar_odom/doppler.py`). Per frame, take
+the 512 strongest returns as a point set (direction, range, Doppler, intensity). A small
+PointNet scores each return's reliability (moving objects, multipath, noise), and the
+velocity is the closed-form weighted least-squares solution of d = −u·v, in two rounds
+(the second sees residuals: a learned IRLS). One frame, 26k parameters, physics built in.
+Trained with yaw augmentation (rotating u and v together leaves Doppler unchanged).
+
+Unseen test runs, translation per step and trajectories with **ground-truth rotation**
+for every method (isolates translation; rotation must come from elsewhere, e.g. a gyro):
+
+| test run | method | step error [cm] | ATE [m] | ATE [% path] |
+|---|---|---|---|---|
+| ec_hallways_run4 (102 m) | zero | 23.9 | 11.51 | 11.2 |
+| | constant | 13.1 | 4.52 | 4.4 |
+| | CNN | 11.1 | 4.73 | 4.6 |
+| | Doppler least squares (no learning) | 8.8 | 2.75 | 2.7 |
+| | **learned Doppler** | **8.5** | **2.45** | **2.4** |
+| arpg_lab_run4 (95 m) | zero | 13.8 | 8.13 | 8.5 |
+| | constant | 16.7 | 13.29 | 14.0 |
+| | CNN | 8.7 | 2.67 | 2.8 |
+| | Doppler least squares (no learning) | 7.5 | 2.76 | 2.9 |
+| | **learned Doppler** | **7.2** | **2.57** | **2.7** |
+
+Rotation per step: CNN 3.69° / 4.05° vs zero 3.67° / 3.74°. With its own rotation the
+CNN's ATE is 14.4 m / 5.9 m.
+
+Caveats: two test runs, one seed. The learned model beats plain least squares by only
+3–4 % per step (the physics does most of the work); vertical motion (~4.3 cm/step of
+the error for every method) is poorly observable because the radar resolves elevation
+weakly. A full odometry system needs rotation from another source: a gyroscope
+(ColoRadar includes an IMU) or a learned registration step.
+
 ## Reading results
 
 `evaluate` writes `results_test.md`, `metrics_test.json`, `trajectories_test.png` and
